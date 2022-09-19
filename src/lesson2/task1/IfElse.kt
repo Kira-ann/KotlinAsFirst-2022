@@ -5,7 +5,7 @@ package lesson2.task1
 import lesson1.task1.discriminant
 import kotlin.math.max
 import kotlin.math.sqrt
-
+import kotlin.math.abs
 // Урок 2: ветвления (здесь), логический тип (см. 2.2).
 // Максимальное количество баллов = 6
 // Рекомендуемое количество баллов = 5
@@ -68,7 +68,13 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String = TODO()
+fun ageDescription(age: Int): String {
+    return when {
+        age in 2..4 || age in 22..200 step 10 || age in 23..200 step 10 || age in 24..200 step 10 -> "$age года"
+        (age in 1..200 step 10) && (age != 111) -> "$age год"
+        else -> "$age лет"
+    }
+}
 
 /**
  * Простая (2 балла)
@@ -78,10 +84,13 @@ fun ageDescription(age: Int): String = TODO()
  * Определить, за какое время он одолел первую половину пути?
  */
 fun timeForHalfWay(
-    t1: Double, v1: Double,
-    t2: Double, v2: Double,
-    t3: Double, v3: Double
-): Double = TODO()
+    t1: Double, v1: Double, t2: Double, v2: Double, t3: Double, v3: Double
+): Double {
+    val path = t1 * v1 + t2 * v2 + t3 * v3
+    if (t1 * v1 >= (path / 2)) return path / 2 / v1
+    else if ((t1 * v1 + t2 * v2) >= (path / 2)) return (path / 2 - t1 * v1) / v2 + t1
+    else return t1 + t2 + t3 - path / 2 / v3
+}
 
 /**
  * Простая (2 балла)
@@ -93,10 +102,17 @@ fun timeForHalfWay(
  * Считать, что ладьи не могут загораживать друг друга
  */
 fun whichRookThreatens(
-    kingX: Int, kingY: Int,
-    rookX1: Int, rookY1: Int,
-    rookX2: Int, rookY2: Int
-): Int = TODO()
+    kingX: Int, kingY: Int, rookX1: Int, rookY1: Int, rookX2: Int, rookY2: Int
+): Int {
+    val horizontalVerticalFirst = (kingX == rookX1) || (kingY == rookY1)
+    val horizontalVerticalSecond = (kingX == rookX2) || (kingY == rookY2)
+    return when {
+        horizontalVerticalFirst && horizontalVerticalSecond -> 3
+        horizontalVerticalFirst -> 1
+        horizontalVerticalSecond -> 2
+        else -> 0
+    }
+}
 
 /**
  * Простая (2 балла)
@@ -109,10 +125,15 @@ fun whichRookThreatens(
  * Считать, что ладья и слон не могут загораживать друг друга.
  */
 fun rookOrBishopThreatens(
-    kingX: Int, kingY: Int,
-    rookX: Int, rookY: Int,
-    bishopX: Int, bishopY: Int
-): Int = TODO()
+    kingX: Int, kingY: Int, rookX: Int, rookY: Int, bishopX: Int, bishopY: Int
+): Int {
+    val threatRook = (kingX == rookX) || (kingY == rookY)
+    val threatBishop = abs(kingX - bishopX) == abs(kingY - bishopY)
+    if (threatRook && threatBishop) return 3
+    else if (threatRook) return 1
+    else if (threatBishop) return 2
+    else return 0
+}
 
 /**
  * Простая (2 балла)
@@ -122,7 +143,15 @@ fun rookOrBishopThreatens(
  * прямоугольным (вернуть 1) или тупоугольным (вернуть 2).
  * Если такой треугольник не существует, вернуть -1.
  */
-fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
+fun triangleKind(a: Double, b: Double, c: Double): Int {
+    val maximum = maxOf(a, b, c)
+    val minimum = minOf(a, b, c)
+    val middle = a + b + c - maximum - minimum
+    if (maximum > (minimum + middle)) return -1
+    else if ((maximum * maximum) == (minimum * minimum + middle * middle)) return 1
+    else if ((maximum * maximum) > (minimum * minimum + middle * middle)) return 2
+    else return 0
+}
 
 /**
  * Средняя (3 балла)
@@ -132,4 +161,11 @@ fun triangleKind(a: Double, b: Double, c: Double): Int = TODO()
  * Найти длину пересечения отрезков AB и CD.
  * Если пересечения нет, вернуть -1.
  */
-fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int = TODO()
+fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
+    if ((c > b) || ((c < b) && (d < a))) return -1
+    else if (c == b) return 0
+    else if (a > c && d > b) return b - a
+    else if (c > a && b > d) return d - c
+    else if (a > c && b > d) return d - a
+    else return b - c
+}
