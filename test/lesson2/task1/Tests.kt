@@ -39,6 +39,8 @@ class Tests {
         assertEquals("132 года", ageDescription(132))
         assertEquals("12 лет", ageDescription(12))
         assertEquals("111 лет", ageDescription(111))
+        assertEquals("131 год", ageDescription(131))
+        assertEquals("11 лет", ageDescription(11))
         assertEquals("199 лет", ageDescription(199))
     }
 
@@ -88,5 +90,7 @@ class Tests {
         assertEquals(1, segmentLength(3, 6, 1, 4))
         assertEquals(4, segmentLength(1, 15, 10, 14))
         assertEquals(4, segmentLength(2, 15, 6, 10))
+        assertEquals(0, segmentLength(2, 5, 5, 10))
+        assertEquals(13, segmentLength(2, 15, 2, 15))
     }
 }

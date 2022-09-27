@@ -70,8 +70,9 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  */
 fun ageDescription(age: Int): String {
     return when {
-        age in 2..4 || age in 22..200 step 10 || age in 23..200 step 10 || age in 24..200 step 10 -> "$age года"
-        (age in 1..200 step 10) && (age != 111) -> "$age год"
+        age in 2..4 -> "$age года"
+        age in 22..200 step 10 || age in 23..200 step 10 || age in 24..200 step 10 -> "$age года"
+        (age in 1..200 step 10) && (age % 100 != 11) -> "$age год"
         else -> "$age лет"
     }
 }
@@ -87,9 +88,9 @@ fun timeForHalfWay(
     t1: Double, v1: Double, t2: Double, v2: Double, t3: Double, v3: Double
 ): Double {
     val path = t1 * v1 + t2 * v2 + t3 * v3
-    if (t1 * v1 >= (path / 2)) return path / 2 / v1
-    else if ((t1 * v1 + t2 * v2) >= (path / 2)) return (path / 2 - t1 * v1) / v2 + t1
-    else return t1 + t2 + t3 - path / 2 / v3
+    return if (t1 * v1 >= (path / 2)) path / 2 / v1
+    else if ((t1 * v1 + t2 * v2) >= (path / 2)) (path / 2 - t1 * v1) / v2 + t1
+    else t1 + t2 + t3 - path / 2 / v3
 }
 
 /**
@@ -129,10 +130,12 @@ fun rookOrBishopThreatens(
 ): Int {
     val threatRook = (kingX == rookX) || (kingY == rookY)
     val threatBishop = abs(kingX - bishopX) == abs(kingY - bishopY)
-    if (threatRook && threatBishop) return 3
-    else if (threatRook) return 1
-    else if (threatBishop) return 2
-    else return 0
+    return when {
+        threatRook && threatBishop -> 3
+        threatRook -> 1
+        threatBishop -> 2
+        else -> 0
+    }
 }
 
 /**
@@ -162,10 +165,10 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    if ((c > b) || ((c < b) && (d < a))) return -1
-    else if (c == b) return 0
-    else if (a > c && d > b) return b - a
-    else if (c > a && b > d) return d - c
-    else if (a > c && b > d) return d - a
-    else return b - c
+    if ((c == a) && (b == d)) return b - a
+    else if ((c > a) && (b >= c) && (d > b)) return b - c
+    else if ((a > c) && (d >= a) && (b > d)) return d - a
+    else if ((c > a) && (b > d)) return d - c
+    else if ((a > c) && (d > b)) return b - a
+    else return -1
 }
