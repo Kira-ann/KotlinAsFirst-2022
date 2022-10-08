@@ -68,16 +68,16 @@ fun minBiRoot(a: Double, b: Double, c: Double): Double {
  * Мой возраст. Для заданного 0 < n < 200, рассматриваемого как возраст человека,
  * вернуть строку вида: «21 год», «32 года», «12 лет».
  */
-fun ageDescription(age: Int): String {
-    return when {
+fun ageDescription(age: Int): String =
+    when {
         age in 2..4 -> "$age года"
-        (age in 24..200 step 10) && (age % 100 != 14) -> "$age года"
-        (age in 22..200 step 10) && (age % 100 != 12) -> "$age года"
-        (age in 23..200 step 10) && (age % 100 != 13) -> "$age года"
-        (age in 1..200 step 10) && (age % 100 != 11) -> "$age год"
+        (age % 10 == 4) && (age % 100 != 14) -> "$age года"
+        (age % 10 == 2) && (age % 100 != 12) -> "$age года"
+        (age % 10 == 3) && (age % 100 != 13) -> "$age года"
+        (age % 10 == 1) && (age % 100 != 11) -> "$age год"
         else -> "$age лет"
     }
-}
+
 
 /**
  * Простая (2 балла)
@@ -90,9 +90,11 @@ fun timeForHalfWay(
     t1: Double, v1: Double, t2: Double, v2: Double, t3: Double, v3: Double
 ): Double {
     val path = t1 * v1 + t2 * v2 + t3 * v3
-    return if (t1 * v1 >= (path / 2)) path / 2 / v1
-    else if ((t1 * v1 + t2 * v2) >= (path / 2)) (path / 2 - t1 * v1) / v2 + t1
-    else t1 + t2 + t3 - path / 2 / v3
+    return when {
+        (t1 * v1 >= (path / 2)) -> path / 2 / v1
+        ((t1 * v1 + t2 * v2) >= (path / 2)) -> (path / 2 - t1 * v1) / v2 + t1
+        else -> t1 + t2 + t3 - path / 2 / v3
+    }
 }
 
 /**
@@ -152,10 +154,12 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
     val maximum = maxOf(a, b, c)
     val minimum = minOf(a, b, c)
     val middle = a + b + c - maximum - minimum
-    if (maximum > (minimum + middle)) return -1
-    else if ((maximum * maximum) == (minimum * minimum + middle * middle)) return 1
-    else if ((maximum * maximum) > (minimum * minimum + middle * middle)) return 2
-    else return 0
+    return when {
+        (maximum > (minimum + middle)) -> -1
+        (maximum * maximum) == (minimum * minimum + middle * middle) -> 1
+        (maximum * maximum) > (minimum * minimum + middle * middle) ->2
+        else -> 0
+    }
 }
 
 /**
@@ -168,7 +172,8 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
     return if ((c == a) && (b == d)) b - a
-    else if ((a == b) or (d == c)) 0
+    else if ((a == b) && (a >= c) && (d >= a)) 0
+    else if ((c == d) && (c >= a) && (b >= c)) 0
     else if ((c > a) && (b >= c) && (d > b)) b - c
     else if ((a > c) && (d >= a) && (b > d)) d - a
     else if ((c > a) && (b > d)) d - c

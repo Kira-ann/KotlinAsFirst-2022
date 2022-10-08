@@ -2,10 +2,8 @@
 
 package lesson3.task1
 
-import kotlin.math.sqrt
-import kotlin.math.min
-import kotlin.math.max
-import kotlin.math.abs
+import kotlin.math.*
+import kotlin.math.PI
 // Урок 3: циклы
 // Максимальное количество баллов = 9
 // Рекомендуемое количество баллов = 7
@@ -78,10 +76,10 @@ fun digitNumber(n: Int): Int {
     var number = n
     var count = 0
     while (abs(number) > 9) {
-        count ++
+        count++
         number /= 10
     }
-    return count+1
+    return count + 1
 }
 
 /**
@@ -112,10 +110,10 @@ fun minDivisor(n: Int): Int {
     var divider = n
     for (i in 2..sqrt(n.toDouble()).toInt()) {
         if (n % i == 0) {
-            divider = min(i, divider)
+            return i
         }
     }
-    return divider
+    return n
 }
 
 /**
@@ -169,8 +167,8 @@ fun lcm(m: Int, n: Int): Int {
     var newN = n
     var newM = m
     while (newM != newN) {
-        if (newM > newN) newM = newM - newN
-        else newN = newN - newM
+        if (newM > newN) newM -= newN
+        else newN -= newM
     }
     val nod = newM
     return m * n / nod
@@ -222,7 +220,20 @@ fun isPalindrome(n: Int): Boolean = n == revert(n)
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun hasDifferentDigits(n: Int): Boolean = TODO()
+fun hasDifferentDigits(n: Int): Boolean {
+    if (n < 10) return false
+    var newN = n
+    var numberFirst = n % 10
+    var numberSecond = n / 10 % 10
+    if (n < 100) return numberSecond != numberFirst
+    while (abs(newN) > 9) {
+        newN /= 10
+        if (numberSecond != numberFirst) return true
+        numberFirst = numberSecond
+        numberSecond = newN / 10 % 10
+    }
+    return false
+}
 
 /**
  * Средняя (4 балла)
@@ -233,7 +244,20 @@ fun hasDifferentDigits(n: Int): Boolean = TODO()
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.sin и другие стандартные реализации функции синуса в этой задаче запрещается.
  */
-fun sin(x: Double, eps: Double): Double = TODO()
+fun sin(x: Double, eps: Double): Double {
+    val newX = ((x / PI) - ((x / PI).toInt() / 2) * 2) * PI
+    var sum = newX
+    var counter = 4
+    var term = newX.pow(3) / 6
+    var factorial = 6.0
+    while (abs(term) > eps) {
+        if (counter % 4 == 0) sum -= term else sum += term
+        factorial *= counter * (counter + 1)
+        term = (newX.pow(counter + 1)) / (factorial)
+        counter += 2
+    }
+    return sum
+}
 
 /**
  * Средняя (4 балла)
@@ -244,7 +268,20 @@ fun sin(x: Double, eps: Double): Double = TODO()
  * Подумайте, как добиться более быстрой сходимости ряда при больших значениях x.
  * Использовать kotlin.math.cos и другие стандартные реализации функции косинуса в этой задаче запрещается.
  */
-fun cos(x: Double, eps: Double): Double = TODO()
+fun cos(x: Double, eps: Double): Double {
+    val newX = ((x / PI) - ((x / PI).toInt() / 2) * 2) * PI
+    var sum = 1.0
+    var counter = 3
+    var term = newX.pow(2) / 2
+    var factorial = 2.0
+    while (abs(term) > eps) {
+        if (counter % 4 == 3) sum -= term else sum += term
+        factorial *= counter * (counter + 1)
+        term = (newX.pow(counter + 1)) / (factorial)
+        counter += 2
+    }
+    return sum
+}
 
 /**
  * Сложная (4 балла)
@@ -255,7 +292,20 @@ fun cos(x: Double, eps: Double): Double = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun squareSequenceDigit(n: Int): Int = TODO()
+fun squareSequenceDigit(n: Int): Int {
+    var counter = 0
+    var number = 0
+    var rightNumber = 0
+    while(n > counter){
+        number++
+        counter += digitNumber(number * number)
+    }
+    rightNumber = number * number
+    for (i in 1..(counter - n)){
+        rightNumber /= 10
+    }
+    return rightNumber % 10
+}
 
 /**
  * Сложная (5 баллов)
@@ -266,4 +316,17 @@ fun squareSequenceDigit(n: Int): Int = TODO()
  *
  * Использовать операции со строками в этой задаче запрещается.
  */
-fun fibSequenceDigit(n: Int): Int = TODO()
+fun fibSequenceDigit(n: Int): Int {
+    var counter = 0
+    var number = 0
+    var rightNumber = 0
+    while(n > counter){
+        number++
+        counter += digitNumber(fib(number))
+    }
+    rightNumber = fib(number)
+    for (i in 1..(counter - n)){
+        rightNumber /= 10
+    }
+    return rightNumber % 10
+}
