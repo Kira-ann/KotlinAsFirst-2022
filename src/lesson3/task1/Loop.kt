@@ -121,15 +121,7 @@ fun minDivisor(n: Int): Int {
  *
  * Для заданного числа n > 1 найти максимальный делитель, меньший n
  */
-fun maxDivisor(n: Int): Int {
-    var divider = 1
-    for (i in 2..sqrt(n.toDouble()).toInt()) {
-        if (n % i == 0) {
-            divider = max((n / i), divider)
-        }
-    }
-    return divider
-}
+fun maxDivisor(n: Int): Int = n / minDivisor(n)
 
 /**
  * Простая (2 балла)
@@ -181,7 +173,7 @@ fun lcm(m: Int, n: Int): Int {
  * Взаимно простые числа не имеют общих делителей, кроме 1.
  * Например, 25 и 49 взаимно простые, а 6 и 8 -- нет.
  */
-fun isCoPrime(m: Int, n: Int): Boolean = (m * n / lcm(m, n)) == 1
+fun isCoPrime(m: Int, n: Int): Boolean = m * n / lcm(m, n) == 1
 
 /**
  * Средняя (3 балла)
@@ -253,7 +245,7 @@ fun sin(x: Double, eps: Double): Double {
     while (abs(term) > eps) {
         if (counter % 4 == 0) sum -= term else sum += term
         factorial *= counter * (counter + 1)
-        term = (newX.pow(counter + 1)) / (factorial)
+        term = newX.pow(counter + 1) / factorial
         counter += 2
     }
     return sum
@@ -277,7 +269,7 @@ fun cos(x: Double, eps: Double): Double {
     while (abs(term) > eps) {
         if (counter % 4 == 3) sum -= term else sum += term
         factorial *= counter * (counter + 1)
-        term = (newX.pow(counter + 1)) / (factorial)
+        term = newX.pow(counter + 1) / factorial
         counter += 2
     }
     return sum
@@ -296,7 +288,7 @@ fun squareSequenceDigit(n: Int): Int {
     var counter = 0
     var number = 0
     var rightNumber = 0
-    while(n > counter){
+    while (n > counter) {
         number++
         counter += digitNumber(number * number)
     }
@@ -320,12 +312,12 @@ fun fibSequenceDigit(n: Int): Int {
     var counter = 0
     var number = 0
     var rightNumber = 0
-    while(n > counter){
+    while(n > counter) {
         number++
         counter += digitNumber(fib(number))
     }
     rightNumber = fib(number)
-    for (i in 1..(counter - n)){
+    for (i in 1..(counter - n)) {
         rightNumber /= 10
     }
     return rightNumber % 10

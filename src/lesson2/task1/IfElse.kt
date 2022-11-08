@@ -6,6 +6,7 @@ import lesson1.task1.discriminant
 import kotlin.math.max
 import kotlin.math.sqrt
 import kotlin.math.abs
+
 // Урок 2: ветвления (здесь), логический тип (см. 2.2).
 // Максимальное количество баллов = 6
 // Рекомендуемое количество баллов = 5
@@ -91,8 +92,8 @@ fun timeForHalfWay(
 ): Double {
     val path = t1 * v1 + t2 * v2 + t3 * v3
     return when {
-        (t1 * v1 >= (path / 2)) -> path / 2 / v1
-        ((t1 * v1 + t2 * v2) >= (path / 2)) -> (path / 2 - t1 * v1) / v2 + t1
+        t1 * v1 >= (path / 2) -> path / 2 / v1
+        t1 * v1 + t2 * v2 >= (path / 2) -> (path / 2 - t1 * v1) / v2 + t1
         else -> t1 + t2 + t3 - path / 2 / v3
     }
 }
@@ -109,8 +110,8 @@ fun timeForHalfWay(
 fun whichRookThreatens(
     kingX: Int, kingY: Int, rookX1: Int, rookY1: Int, rookX2: Int, rookY2: Int
 ): Int {
-    val horizontalVerticalFirst = (kingX == rookX1) || (kingY == rookY1)
-    val horizontalVerticalSecond = (kingX == rookX2) || (kingY == rookY2)
+    val horizontalVerticalFirst = kingX == rookX1 || kingY == rookY1
+    val horizontalVerticalSecond = kingX == rookX2 || kingY == rookY2
     return when {
         horizontalVerticalFirst && horizontalVerticalSecond -> 3
         horizontalVerticalFirst -> 1
@@ -132,7 +133,7 @@ fun whichRookThreatens(
 fun rookOrBishopThreatens(
     kingX: Int, kingY: Int, rookX: Int, rookY: Int, bishopX: Int, bishopY: Int
 ): Int {
-    val threatRook = (kingX == rookX) || (kingY == rookY)
+    val threatRook = kingX == rookX || kingY == rookY
     val threatBishop = abs(kingX - bishopX) == abs(kingY - bishopY)
     return when {
         threatRook && threatBishop -> 3
@@ -155,9 +156,9 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
     val minimum = minOf(a, b, c)
     val middle = a + b + c - maximum - minimum
     return when {
-        (maximum > (minimum + middle)) -> -1
-        (maximum * maximum) == (minimum * minimum + middle * middle) -> 1
-        (maximum * maximum) > (minimum * minimum + middle * middle) ->2
+        maximum > (minimum + middle) -> -1
+        maximum * maximum == minimum * minimum + middle * middle -> 1
+        maximum * maximum > minimum * minimum + middle * middle -> 2
         else -> 0
     }
 }
@@ -171,12 +172,11 @@ fun triangleKind(a: Double, b: Double, c: Double): Int {
  * Если пересечения нет, вернуть -1.
  */
 fun segmentLength(a: Int, b: Int, c: Int, d: Int): Int {
-    return if ((c == a) && (b == d)) b - a
-    else if ((a == b) && (a >= c) && (d >= a)) 0
-    else if ((c == d) && (c >= a) && (b >= c)) 0
-    else if ((c > a) && (b >= c) && (d > b)) b - c
-    else if ((a > c) && (d >= a) && (b > d)) d - a
-    else if ((c > a) && (b > d)) d - c
-    else if ((a > c) && (d > b)) b - a
-    else -1
+    return when {
+        (c > b) || (a > d) -> -1
+        (a <= c) -> if (b <= d) (b - c) else (d - c)
+        (c < a) -> if (d <= b) (d - a) else (b - a)
+        (a == c) && (b == d) -> b - a
+        else -> 0
+    }
 }

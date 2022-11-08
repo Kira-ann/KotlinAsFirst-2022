@@ -5,6 +5,8 @@ package lesson4.task1
 import lesson3.task1.minDivisor
 import lesson1.task1.discriminant
 import kotlin.math.sqrt
+import kotlin.math.pow
+
 
 // Урок 4: списки
 // Максимальное количество баллов = 12
@@ -134,15 +136,7 @@ fun abs(v: List<Double>): Double {
  *
  * Рассчитать среднее арифметическое элементов списка list. Вернуть 0.0, если список пуст
  */
-fun mean(list: List<Double>): Double {
-    var counter = 0.0
-    var sum = 0
-    for (element in list) {
-        counter += element
-        sum++
-    }
-    return if (sum == 0) 0.0 else counter / sum
-}
+fun mean(list: List<Double>): Double = if (list.isNotEmpty()) list.sum() / list.size else 0.0
 
 /**
  * Средняя (3 балла)
@@ -169,7 +163,7 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  */
 fun times(a: List<Int>, b: List<Int>): Int {
     var c = 0
-    for (i in 0 until b.size) {
+    for (i in b.indices) {
         c += a[i] * b[i]
     }
     return c
@@ -244,8 +238,8 @@ fun factorize(n: Int): List<Int> {
 fun factorizeToString(n: Int): String {
     var dividers = ""
     val list = factorize(n)
-    for (i in 0 until list.size) {
-        dividers = dividers + list[i] + "*"
+    for (element in list) {
+        dividers = dividers + element + "*"
     }
     return dividers.substring(0, dividers.length - 1)
 }
@@ -257,7 +251,15 @@ fun factorizeToString(n: Int): String {
  * Результат перевода вернуть в виде списка цифр в base-ичной системе от старшей к младшей,
  * например: n = 100, base = 4 -> (1, 2, 1, 0) или n = 250, base = 14 -> (1, 3, 12)
  */
-fun convert(n: Int, base: Int): List<Int> = TODO()
+fun convert(n: Int, base: Int): List<Int> {
+    var a = mutableListOf<Int>()
+    var newNumber = n
+    while (newNumber > 0) {
+        a.add(newNumber % base)
+        newNumber /= base
+    }
+    return a.reversed()
+}
 
 /**
  * Сложная (4 балла)
@@ -270,7 +272,16 @@ fun convert(n: Int, base: Int): List<Int> = TODO()
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, n.toString(base) и подобные), запрещается.
  */
-fun convertToString(n: Int, base: Int): String = TODO()
+fun convertToString(n: Int, base: Int): String {
+    val str = "abcdefghijklmnopqrstuvwxyz"
+    var a = ""
+    var newNumber = n
+    while (newNumber > 0) {
+        if (newNumber % base < 10) a += newNumber % base else a += str[newNumber % base - 10]
+        newNumber /= base
+    }
+    return a.reversed()
+}
 
 /**
  * Средняя (3 балла)
@@ -279,7 +290,16 @@ fun convertToString(n: Int, base: Int): String = TODO()
  * из системы счисления с основанием base в десятичную.
  * Например: digits = (1, 3, 12), base = 14 -> 250
  */
-fun decimal(digits: List<Int>, base: Int): Int = TODO()
+fun decimal(digits: List<Int>, base: Int): Int {
+    var ans = 0
+    return if (digits.size > 1) {
+        for (element in digits) {
+            ans *= base
+            ans += element
+        }
+        ans
+    } else digits[0]
+}
 
 /**
  * Сложная (4 балла)
@@ -293,7 +313,20 @@ fun decimal(digits: List<Int>, base: Int): Int = TODO()
  * Использовать функции стандартной библиотеки, напрямую и полностью решающие данную задачу
  * (например, str.toInt(base)), запрещается.
  */
-fun decimalFromString(str: String, base: Int): Int = TODO()
+fun decimalFromString(str: String, base: Int): Int {
+    var list = mutableListOf<Int>()
+    val alp = "abcdefghijklmnopqrstuvwxyz"
+    val number = "0123456789"
+    for (element in str) {
+        var newElement = 0
+        if (element in alp) {
+            newElement = alp.indexOf(element)
+            list.add(newElement + 10)
+        }
+        if (element in number) list.add(number.indexOf(element))
+    }
+    return decimal(list, base)
+}
 
 /**
  * Сложная (5 баллов)
@@ -313,3 +346,7 @@ fun roman(n: Int): String = TODO()
  * 23964 = "двадцать три тысячи девятьсот шестьдесят четыре"
  */
 fun russian(n: Int): String = TODO()
+
+
+
+

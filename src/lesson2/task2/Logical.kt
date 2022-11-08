@@ -33,7 +33,7 @@ fun isNumberHappy(number: Int): Boolean =
  * Считать, что ферзи не могут загораживать друг друга.
  */
 fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
-    (x1 == x2) || (y1 == y2) || (abs(x1 - x2) == abs(y1 - y2))
+    x1 == x2 || y1 == y2 || abs(x1 - x2) == abs(y1 - y2)
 
 
 /**
@@ -43,7 +43,7 @@ fun queenThreatens(x1: Int, y1: Int, x2: Int, y2: Int): Boolean =
  * Вернуть число дней в этом месяце этого года по григорианскому календарю.
  */
 fun daysInMonth(month: Int, year: Int): Int {
-    val leapYear = ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0)
+    val leapYear = ((year % 4 == 0) && (year % 100 != 0)) || year % 400 == 0
     return when {
         month in 1..7 step 2 || month in 8..12 step 2 -> 31
         leapYear && (month == 2) -> 29
@@ -78,5 +78,5 @@ fun brickPasses(a: Int, b: Int, c: Int, r: Int, s: Int): Boolean {
     val middleSide = a + b + c - minOf(a, b, c) - maxOf(a, b, c)
     val minimumHole = min(r, s)
     val maximumHole = max(r, s)
-    return (minimumSide <= minimumHole) && (middleSide <= maximumHole)
+    return minimumSide <= minimumHole && middleSide <= maximumHole
 }
