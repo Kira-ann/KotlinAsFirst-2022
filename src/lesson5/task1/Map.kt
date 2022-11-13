@@ -1,6 +1,8 @@
 @file:Suppress("UNUSED_PARAMETER", "ConvertCallChainIntoSequence")
 
 package lesson5.task1
+import kotlin.math.min
+import kotlin.math.max
 
 // Урок 5: ассоциативные массивы и множества
 // Максимальное количество баллов = 14
@@ -142,7 +144,11 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
  *     -> a changes to mutableMapOf() aka becomes empty
  */
 fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
-    TODO()
+    for ((key, string) in b) {
+        if (a[key] == string) {
+            a -= key
+        }
+    }
 }
 
 /**
@@ -152,7 +158,15 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
  * В выходном списке не должно быть повторяющихся элементов,
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
+    var list = mutableListOf<String>()
+    for (i in b) {
+        if (i in a) {
+            list += i
+        }
+    }
+    return list
+}
 
 /**
  * Средняя (3 балла)
@@ -171,7 +185,17 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = TODO()
  *     mapOf("Emergency" to "911", "Police" to "02")
  *   ) -> mapOf("Emergency" to "112, 911", "Police" to "02")
  */
-fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> = TODO()
+fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<String, String> {
+    var list = mapA.toMutableMap()
+    for ((key, value) in mapB) {
+        if (mapA[key] == null) {
+            list[key] = value
+        } else if (mapA[key] != value) {
+            list[key] = list[key] + ", " + value
+        }
+    }
+    return list
+}
 
 /**
  * Средняя (4 балла)
@@ -183,7 +207,18 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  *   averageStockPrice(listOf("MSFT" to 100.0, "MSFT" to 200.0, "NFLX" to 40.0))
  *     -> mapOf("MSFT" to 150.0, "NFLX" to 40.0)
  */
-fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> = TODO()
+fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
+    var list = mutableMapOf<String, Double>()
+    for ((value, price) in stockPrices){
+        if (list[value] == null) {
+            list[value] = price
+        }
+        else {
+            list[value] = (list[value]!! + price) / 2
+        }
+    }
+    return list
+}
 
 /**
  * Средняя (4 балла)
@@ -200,7 +235,7 @@ fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Doub
  *     "печенье"
  *   ) -> "Мария"
  */
-fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String? = TODO()
+fun findCheapestStuff(stuff: Map<String, Pair<String, Double>>, kind: String): String = TODO()
 
 /**
  * Средняя (3 балла)
@@ -294,7 +329,19 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    val possiblePairs = mutableSetOf<Int>()
+    for (i in list) {
+        possiblePairs.add(i)
+    }
+    for (element in list) {
+        var secondNumber = number - element
+        if ((secondNumber in possiblePairs) && (list.indexOf(secondNumber) != list.indexOf(element))) {
+            return Pair(list.indexOf(min(element, secondNumber)), list.indexOf(max(element, secondNumber)))
+        }
+    }
+    return Pair(-1, -1)
+}
 
 /**
  * Очень сложная (8 баллов)
