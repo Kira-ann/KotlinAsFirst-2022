@@ -165,7 +165,7 @@ fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
             list += i
         }
     }
-    return list
+    return list.toSet().toList()
 }
 
 /**
@@ -209,12 +209,15 @@ fun mergePhoneBooks(mapA: Map<String, String>, mapB: Map<String, String>): Map<S
  */
 fun averageStockPrice(stockPrices: List<Pair<String, Double>>): Map<String, Double> {
     var list = mutableMapOf<String, Double>()
-    for ((value, price) in stockPrices){
+    var cost = mutableMapOf<String, Int>()
+    for ((value, price) in stockPrices) {
         if (list[value] == null) {
             list[value] = price
+            cost[value] = 1
         }
         else {
-            list[value] = (list[value]!! + price) / 2
+            cost[value] = cost[value]!! + 1
+            list[value] = (list[value]!! + price) / cost[value]!!
         }
     }
     return list
@@ -329,19 +332,7 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
-    val possiblePairs = mutableSetOf<Int>()
-    for (i in list) {
-        possiblePairs.add(i)
-    }
-    for (element in list) {
-        var secondNumber = number - element
-        if ((secondNumber in possiblePairs) && (list.indexOf(secondNumber) != list.indexOf(element))) {
-            return Pair(list.indexOf(min(element, secondNumber)), list.indexOf(max(element, secondNumber)))
-        }
-    }
-    return Pair(-1, -1)
-}
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
 
 /**
  * Очень сложная (8 баллов)
