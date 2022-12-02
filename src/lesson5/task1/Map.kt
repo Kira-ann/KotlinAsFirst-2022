@@ -123,10 +123,10 @@ fun containsIn(a: Map<String, String>, b: Map<String, String>): Boolean {
     var include = true
     for ((key, value) in a) {
         if (a[key] != b[key]) {
-            include = false
+            return false
         }
     }
-    return include
+    return true
 }
 
 /**
@@ -158,15 +158,7 @@ fun subtractOf(a: MutableMap<String, String>, b: Map<String, String>) {
  * В выходном списке не должно быть повторяющихся элементов,
  * т. е. whoAreInBoth(listOf("Марат", "Семён, "Марат"), listOf("Марат", "Марат")) == listOf("Марат")
  */
-fun whoAreInBoth(a: List<String>, b: List<String>): List<String> {
-    var list = mutableListOf<String>()
-    for (i in b) {
-        if (i in a) {
-            list += i
-        }
-    }
-    return list.toSet().toList()
-}
+fun whoAreInBoth(a: List<String>, b: List<String>): List<String> = (a.toSet()).intersect(b.toSet()).toList()
 
 /**
  * Средняя (3 балла)
@@ -335,7 +327,19 @@ fun propagateHandshakes(friends: Map<String, Set<String>>): Map<String, Set<Stri
  *   findSumOfTwo(listOf(1, 2, 3), 4) -> Pair(0, 2)
  *   findSumOfTwo(listOf(1, 2, 3), 6) -> Pair(-1, -1)
  */
-fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> = TODO()
+fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
+    var a = -1
+    var b = -1
+    for (i in list.indices) {
+        for (j in (i + 1) until list.size) {
+            if (list[i] + list[j] == number) {
+                a = i
+                b = j
+            }
+        }
+    }
+    return Pair(a,b)
+}
 
 /**
  * Очень сложная (8 баллов)

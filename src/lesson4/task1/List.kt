@@ -123,13 +123,8 @@ fun buildSumExample(list: List<Int>) = list.joinToString(separator = " + ", post
  * по формуле abs = sqrt(a1^2 + a2^2 + ... + aN^2).
  * Модуль пустого вектора считать равным 0.0.
  */
-fun abs(v: List<Double>): Double {
-    var abs = 0.0
-    for (element in v) {
-        abs += (element * element)
-    }
-    return sqrt(abs)
-}
+fun abs(v: List<Double>): Double = sqrt((v.map { it * it }).sum())
+
 
 /**
  * Простая (2 балла)
@@ -199,7 +194,6 @@ fun polynom(p: List<Int>, x: Int): Int {
  */
 fun accumulate(list: MutableList<Int>): MutableList<Int> {
 
-    if (list.size == 0) return list
     var sum = 0
     for (i in 0 until list.size) {
         sum += list[i]
@@ -235,14 +229,7 @@ fun factorize(n: Int): List<Int> {
  * Результат разложения вернуть в виде строки, например 75 -> 3*5*5
  * Множители в результирующей строке должны располагаться по возрастанию.
  */
-fun factorizeToString(n: Int): String {
-    var dividers = ""
-    val list = factorize(n)
-    for (element in list) {
-        dividers = dividers + element + "*"
-    }
-    return dividers.substring(0, dividers.length - 1)
-}
+fun factorizeToString(n: Int): String = factorize(n).joinToString('*'.toString())
 
 /**
  * Средняя (3 балла)
@@ -259,8 +246,7 @@ fun convert(n: Int, base: Int): List<Int> {
             a.add(newNumber % base)
             newNumber /= base
         }
-    }
-    else a = mutableListOf(0)
+    } else return mutableListOf(0)
     return a.reversed()
 }
 
@@ -276,17 +262,14 @@ fun convert(n: Int, base: Int): List<Int> {
  * (например, n.toString(base) и подобные), запрещается.
  */
 fun convertToString(n: Int, base: Int): String {
-    val str = "abcdefghijklmnopqrstuvwxyz"
-    var a = ""
-    var newNumber = n
-    if (n > 0) {
-        while (newNumber > 0) {
-            if (newNumber % base < 10) a += newNumber % base else a += str[newNumber % base - 10]
-            newNumber /= base
-        }
+    val result = convert(n, base)
+    var end = ""
+    for (i in result) {
+        if (i > 9) {
+            end += 'a' + i - 10
+        } else end += i.toString()
     }
-    else a = "0"
-    return a.reversed()
+    return end
 }
 
 /**
@@ -321,15 +304,12 @@ fun decimal(digits: List<Int>, base: Int): Int {
  */
 fun decimalFromString(str: String, base: Int): Int {
     var list = mutableListOf<Int>()
-    val alp = "abcdefghijklmnopqrstuvwxyz"
-    val number = "0123456789"
-    for (element in str) {
-        var newElement = 0
-        if (element in alp) {
-            newElement = alp.indexOf(element)
-            list.add(newElement + 10)
+    val numbers = "0123456789"
+    for (char in str) {
+        if (char in numbers) {
+            list.add(numbers.indexOf(char))
         }
-        if (element in number) list.add(number.indexOf(element))
+        else list.add(char - 'a' + 10)
     }
     return decimal(list, base)
 }

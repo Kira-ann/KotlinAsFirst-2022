@@ -1,7 +1,7 @@
 @file:Suppress("UNUSED_PARAMETER", "ConvertCallChainIntoSequence")
 
 package lesson6.task1
-
+import lesson2.task2.daysInMonth
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
 // Рекомендуемое количество баллов = 11
@@ -74,7 +74,49 @@ fun main() {
  * Обратите внимание: некорректная с точки зрения календаря дата (например, 30.02.2009) считается неверными
  * входными данными.
  */
-fun dateStrToDigit(str: String): String = TODO()
+fun dateStrToDigit(str: String): String {
+    val parts = str.split(" ")
+    if (parts.size < 3) return ""
+    val firstPart = parts[0]
+    val thirdPart = parts[2]
+    if (parts[2] == "") {
+        return ""
+    }
+    var result = firstPart
+    val secondPart = when (parts[1]) {
+        "января" -> "1"
+        "февраля" -> "2"
+        "марта" -> "3"
+        "апреля" -> "4"
+        "мая" -> "5"
+        "июня" -> "6"
+        "июля" -> "7"
+        "августа" -> "8"
+        "сентября" -> "9"
+        "октября" -> "10"
+        "ноября" -> "11"
+        "декабря" -> "12"
+        else -> return ""
+    }
+    val year = thirdPart.toInt()
+    val month = secondPart.toInt()
+    val leapYear = ((year % 4 == 0) && (year % 100 != 0)) || year % 400 == 0
+    val presence = when {
+        month in 1..7 step 2 || month in 8..12 step 2 -> 31
+        leapYear && (month == 2) -> 29
+        !leapYear && (month == 2) -> 28
+        else -> 30
+    }
+    if (firstPart.toInt() > presence) {
+        return ""
+    }
+    return when (true) {
+        ((month < 10) && (firstPart.toInt() < 10)) -> "0$firstPart.0$secondPart.$thirdPart"
+        ((month >= 10) && (firstPart.toInt() < 10)) -> "0$firstPart.$secondPart.$thirdPart"
+        ((month < 10) && (firstPart.toInt() >= 10)) -> "$firstPart.0$secondPart.$thirdPart"
+        else -> "$firstPart.$secondPart.$thirdPart"
+    }
+}
 
 /**
  * Средняя (4 балла)
@@ -162,7 +204,20 @@ fun firstDuplicateIndex(str: String): Int = TODO()
  * или пустую строку при нарушении формата строки.
  * Все цены должны быть больше нуля либо равны нулю.
  */
-fun mostExpensive(description: String): String = TODO()
+fun mostExpensive(description: String): String {
+    val parts = description.split("; ")
+    if (parts[0] == "") return ""
+    var max = 0.0
+    var name = ""
+    for (i in parts) {
+        var product = i.split(" ")
+        if (product[1].toDouble() > max) {
+            max = product[1].toDouble()
+            name = product[0]
+        }
+    }
+    return name
+}
 
 /**
  * Сложная (6 баллов)
