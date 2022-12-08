@@ -98,6 +98,7 @@ fun dateStrToDigit(str: String): String {
         "декабря" -> "12"
         else -> return ""
     }
+    val day = firstPart.toInt()
     val year = thirdPart.toInt()
     val month = secondPart.toInt()
     val leapYear = ((year % 4 == 0) && (year % 100 != 0)) || year % 400 == 0
@@ -107,14 +108,14 @@ fun dateStrToDigit(str: String): String {
         !leapYear && (month == 2) -> 28
         else -> 30
     }
-    if (firstPart.toInt() > presence) {
+    if (day > presence) {
         return ""
     }
     return when (true) {
-        ((month < 10) && (firstPart.toInt() < 10)) -> "0$firstPart.0$secondPart.$thirdPart"
-        ((month >= 10) && (firstPart.toInt() < 10)) -> "0$firstPart.$secondPart.$thirdPart"
-        ((month < 10) && (firstPart.toInt() >= 10)) -> "$firstPart.0$secondPart.$thirdPart"
-        else -> "$firstPart.$secondPart.$thirdPart"
+        ((month < 10) && (day < 10)) -> "0$day.0$month.$year"
+        ((month >= 10) && (day < 10)) -> "0$day.$month.$year"
+        ((month < 10) && (day >= 10)) -> "$day.0$month.$year"
+        else -> "$day.$month.$year"
     }
 }
 
@@ -216,6 +217,7 @@ fun mostExpensive(description: String): String {
             name = product[0]
         }
     }
+    if (max == 0.0) return "Any good with price 0.0"
     return name
 }
 
@@ -269,3 +271,21 @@ fun fromRoman(roman: String): Int = TODO()
  *
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
