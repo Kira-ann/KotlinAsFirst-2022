@@ -198,11 +198,9 @@ fun plusMinus(expression: String): Int = TODO()
  */
 fun firstDuplicateIndex(str: String): Int {
     var line = " $str "
-    val result = Regex("""\s([A-zА-я].*)\s\1\s""", RegexOption.IGNORE_CASE).find(line)
+    val result = Regex("""\s([A-zА-я]+)\s\1\s""", RegexOption.IGNORE_CASE).find(line)
     return if (result == null) -1
     else {
-        println(line)
-        println(result.groupValues[0])
         str.indexOf(result.groupValues[0]) + 1
     }
 }
@@ -230,7 +228,7 @@ fun mostExpensive(description: String): String {
             name = product[0]
         }
     }
-    if (max == 0.0) return "Any good with price 0.0"
+    if (max == 0.0) return parts[0].split(" ")[0]
     return name
 }
 
