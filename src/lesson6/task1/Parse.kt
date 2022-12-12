@@ -2,6 +2,10 @@
 
 package lesson6.task1
 import lesson2.task2.daysInMonth
+import java.lang.IllegalArgumentException
+import java.util.StringJoiner
+import kotlin.math.min
+
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
 // Рекомендуемое количество баллов = 11
@@ -192,7 +196,16 @@ fun plusMinus(expression: String): Int = TODO()
  * Вернуть индекс начала первого повторяющегося слова, или -1, если повторов нет.
  * Пример: "Он пошёл в в школу" => результат 9 (индекс первого 'в')
  */
-fun firstDuplicateIndex(str: String): Int = TODO()
+fun firstDuplicateIndex(str: String): Int {
+    var line = " $str "
+    val result = Regex("""\s([A-zА-я].*)\s\1\s""", RegexOption.IGNORE_CASE).find(line)
+    return if (result == null) -1
+    else {
+        println(line)
+        println(result.groupValues[0])
+        str.indexOf(result.groupValues[0]) + 1
+    }
+}
 
 /**
  * Сложная (6 баллов)
@@ -271,6 +284,29 @@ fun fromRoman(roman: String): Int = TODO()
  *
  */
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
+
+
+fun myFun(carPetrols: Map<String, String>, gasStations: String): Map<String, Double> {
+    var price = mutableMapOf<String, Double>()
+    val line = gasStations.split("\n")
+    for (element in line) {
+        if (!Regex("""(([А-я]).*:(\s([А-я]).*\s-\s(\d).*.(\d).*;).*)+""").matches(element)) throw IllegalArgumentException()
+        val parts = gasStations.split(": ")
+        for (i in parts[1].split("; ")) {
+            var fuel = i.split(" - ")
+            for ((car, fuels) in carPetrols) {
+                println(fuel)
+                for (j in 0..fuel.size step 2) {
+                    if (fuel[j] == car) {
+                        price[fuel[j]] = min(price[fuel[j]]!!, fuel[j + 1].toDouble())
+                    }
+                }
+            }
+        }
+    }
+    println(price)
+    return price
+}
 
 
 

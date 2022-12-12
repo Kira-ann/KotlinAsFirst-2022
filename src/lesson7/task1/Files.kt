@@ -4,6 +4,8 @@ package lesson7.task1
 
 import java.io.File
 
+import kotlin.math.max
+
 // Урок 7: работа с файлами
 // Урок интегральный, поэтому его задачи имеют сильно увеличенную стоимость
 // Максимальное количество баллов = 55
@@ -63,7 +65,19 @@ fun alignFile(inputName: String, lineLength: Int, outputName: String) {
  * Подчёркивание в середине и/или в конце строк значения не имеет.
  */
 fun deleteMarked(inputName: String, outputName: String) {
-    TODO()
+    val writer = File(outputName).bufferedWriter()
+    for (line in File(inputName).readLines()) {
+        var term = Regex("""^_""").find(line)
+        if (line.isEmpty()) {
+            writer.newLine()
+        } else {
+            if (term == null) {
+                writer.write(line)
+                writer.newLine()
+            }
+        }
+    }
+    writer.close()
 }
 
 /**
@@ -113,7 +127,24 @@ fun sibilants(inputName: String, outputName: String) {
  *
  */
 fun centerFile(inputName: String, outputName: String) {
-    TODO()
+    val writer = File(outputName).bufferedWriter()
+    var currentLineLength = 0
+    var lineLength = 0
+    var lines = mutableListOf<String>()
+    for (i in File(inputName).readLines()) {
+        lineLength = max(lineLength, i.length)
+        lines += i.replace("^\\s+".toRegex(), "")
+    }
+    println(lineLength)
+    for (element in lines) {
+        for (i in (1..(lineLength - element.length) / 2)) {
+            writer.write(" ")
+        }
+        println(element)
+        writer.write(element)
+        writer.newLine()
+    }
+    writer.close()
 }
 
 /**

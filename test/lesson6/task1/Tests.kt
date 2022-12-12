@@ -1,5 +1,6 @@
 package lesson6.task1
 
+import lesson5.task1.propagateHandshakes
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Tag
@@ -108,6 +109,7 @@ class Tests {
         assertEquals(9, firstDuplicateIndex("Он пошёл в в школу"))
         assertEquals(40, firstDuplicateIndex("Яблоко упало на ветку с ветки оно упало на на землю"))
         assertEquals(9, firstDuplicateIndex("Мы пошли прямо Прямо располагался магазин"))
+        assertEquals(0, firstDuplicateIndex("Мы мы пошли прямо Прямо располагался магазин"))
     }
 
     @Test
@@ -151,5 +153,28 @@ class Tests {
         assertThrows(IllegalArgumentException::class.java) { computeDeviceCells(10, "===", 3) }
         assertThrows(IllegalArgumentException::class.java) { computeDeviceCells(10, "+>+>[+>", 3) }
         assertThrows(IllegalStateException::class.java) { computeDeviceCells(20, ">>>>>>>>>>>>>", 12) }
+    }
+
+    @Test
+    fun myFun() {
+        assertEquals(
+            mapOf(
+                "Lada Vesta" to "Гаспром",
+                "Lada Niva" to "Shell",
+                "BMV M5" to "Лукойн",
+                "Копейка" to "Газпром",
+                "Трактор" to "Лукойн"
+            ),
+            myFun(
+                mapOf(
+                    "Lada Vesta" to "бензин 98",
+                    "Lada Niva" to "дизель",
+                    "BMV M5" to "бензин 95",
+                    "Копейка" to "бензин 88",
+                    "Трактор" to "солярка"
+                ),
+                "Лукойн: бензин 95 - 44.66; дизель - 60.76; солярка - 10;\n Газпром: бензин 98 - 50.00; бензин 88 - 34.30;\n Shell: бензин 66 - 23.00; дизель - 55.50;"
+            )
+        )
     }
 }
