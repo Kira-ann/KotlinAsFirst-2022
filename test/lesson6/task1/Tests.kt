@@ -111,6 +111,7 @@ class Tests {
         assertEquals(9, firstDuplicateIndex("Мы пошли прямо Прямо располагался магазин"))
         assertEquals(0, firstDuplicateIndex("Мы мы пошли прямо Прямо располагался магазин"))
         assertEquals(-1, firstDuplicateIndex("a s a s"))
+        assertEquals(0, firstDuplicateIndex("a a a a"))
     }
 
     @Test
