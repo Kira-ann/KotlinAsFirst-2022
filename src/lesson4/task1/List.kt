@@ -292,9 +292,12 @@ fun decimal(digits: List<Int>, base: Int): Int {
  */
 fun decimalFromString(str: String, base: Int): Int {
     var list = mutableListOf<Int>()
-    val a = 1
+    val numbers = "0123456789"
     for (char in str) {
-        list.add(char - 'a' + 10)
+        if (char in numbers) {
+            list.add(numbers.indexOf(char))
+        }
+        else list.add(char - 'a' + 10)
     }
     return decimal(list, base)
 }
