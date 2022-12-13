@@ -3,6 +3,7 @@
 package lesson7.task1
 
 import java.io.File
+import java.io.FileWriter
 
 import kotlin.math.max
 
@@ -128,16 +129,15 @@ fun sibilants(inputName: String, outputName: String) {
  */
 fun centerFile(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
+    var lineLength = File(inputName).readLines().map { it.length }.max()
     val lines = File(inputName).readLines()
-    var lineLength = (lines.map { it.length }).max()
-    writer.use {
-        for (line in lines) {
-            val element = line.trim()
-            writer.write(" ".repeat((lineLength - element.length) / 2))
-            writer.write(element)
-            writer.write(System.lineSeparator())
-        }
+    for (line in lines) {
+        val element = line.trim()
+        writer.write(" ".repeat((lineLength - element.length) / 2))
+        writer.write(element)
+        writer.newLine()
     }
+    writer.close()
 }
 
 /**
@@ -266,10 +266,7 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
     for (i in word) {
         if (i.length == word.maxOfOrNull { it.length }) result += i
     }
-    for (j in result) {
-        writer.write(j)
-        if (j != result[result.size - 1]) writer.write(", ")
-    }
+    writer.write(result.joinToString(", "))
     writer.close()
 }
 
