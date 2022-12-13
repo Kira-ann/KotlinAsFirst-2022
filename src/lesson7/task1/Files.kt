@@ -135,7 +135,7 @@ fun centerFile(inputName: String, outputName: String) {
             val element = line.trim()
             writer.write(" ".repeat((lineLength - element.length) / 2))
             writer.write(element)
-            writer.newLine()
+            writer.write(System.lineSeparator())
         }
     }
 }
