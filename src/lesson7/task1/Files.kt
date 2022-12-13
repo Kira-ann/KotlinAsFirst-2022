@@ -128,6 +128,7 @@ fun sibilants(inputName: String, outputName: String) {
  */
 fun centerFile(inputName: String, outputName: String) {
     val writer = File(outputName).bufferedWriter()
+    if (File(inputName).length() == 0L) writer.write("")
     var lineLength = (File(inputName).readLines().map { it.length }).max()
     for (i in File(inputName).readLines()) {
         var element = i.replace("^\\s+".toRegex(), "")

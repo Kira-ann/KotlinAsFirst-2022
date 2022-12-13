@@ -335,7 +335,7 @@ fun findSumOfTwo(list: List<Int>, number: Int): Pair<Int, Int> {
             }
         }
     }
-    return Pair(a,b)
+    return Pair(a, b)
 }
 
 /**

@@ -156,13 +156,8 @@ fun center(list: MutableList<Double>): MutableList<Double> {
  * представленные в виде списков a и b. Скалярное произведение считать по формуле:
  * C = a1b1 + a2b2 + ... + aNbN. Произведение пустых векторов считать равным 0.
  */
-fun times(a: List<Int>, b: List<Int>): Int {
-    var c = 0
-    for (i in b.indices) {
-        c += a[i] * b[i]
-    }
-    return c
-}
+fun times(a: List<Int>, b: List<Int>): Int =
+    a.mapIndexed { index, it -> it * b[index] }.fold(0) { prev, curr -> prev + curr }
 
 /**
  * Средняя (3 балла)
@@ -172,15 +167,8 @@ fun times(a: List<Int>, b: List<Int>): Int {
  * Коэффициенты многочлена заданы списком p: (p0, p1, p2, p3, ..., pN).
  * Значение пустого многочлена равно 0 при любом x.
  */
-fun polynom(p: List<Int>, x: Int): Int {
-    var sum = 0
-    var counter = 1
-    for (i in p) {
-        sum += counter * i
-        counter *= x
-    }
-    return sum
-}
+fun polynom(p: List<Int>, x: Int): Int =
+    p.mapIndexed { index, it -> it * (x.toDouble().pow(index)).toInt() }.fold(0) { prev, curr -> prev + curr }
 
 /**
  * Средняя (3 балла)
@@ -304,12 +292,9 @@ fun decimal(digits: List<Int>, base: Int): Int {
  */
 fun decimalFromString(str: String, base: Int): Int {
     var list = mutableListOf<Int>()
-    val numbers = "0123456789"
+    val a = 1
     for (char in str) {
-        if (char in numbers) {
-            list.add(numbers.indexOf(char))
-        }
-        else list.add(char - 'a' + 10)
+        list.add(char - 'a' + 10)
     }
     return decimal(list, base)
 }
