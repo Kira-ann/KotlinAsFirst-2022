@@ -1,10 +1,8 @@
 @file:Suppress("UNUSED_PARAMETER", "ConvertCallChainIntoSequence")
 
 package lesson6.task1
-import lesson2.task2.daysInMonth
 import java.lang.IllegalArgumentException
-import java.util.StringJoiner
-import kotlin.math.min
+
 
 // Урок 6: разбор строк, исключения
 // Максимальное количество баллов = 13
@@ -115,7 +113,7 @@ fun dateStrToDigit(str: String): String {
     if (day > presence) {
         return ""
     }
-    return when (true) {
+    return when {
         ((month < 10) && (day < 10)) -> "0$day.0$month.$year"
         ((month >= 10) && (day < 10)) -> "0$day.$month.$year"
         ((month < 10) && (day >= 10)) -> "$day.0$month.$year"
@@ -277,26 +275,64 @@ fun fromRoman(roman: String): Int = TODO()
 fun computeDeviceCells(cells: Int, commands: String, limit: Int): List<Int> = TODO()
 
 
-fun myFun(carPetrols: Map<String, String>, gasStations: String): Map<String, Double> {
+/*fun myFun(carPetrols: Map<String, String>, gasStations: String): Map<String, Double> {
     var price = mutableMapOf<String, Double>()
     val line = gasStations.split("\n")
     for (element in line) {
         if (!Regex("""(([А-я]).*:(\s([А-я]).*\s-\s(\d).*.(\d).*;).*)+""").matches(element)) throw IllegalArgumentException()
-        val parts = gasStations.split(": ")
+        val parts = element.split(": ")
         for (i in parts[1].split("; ")) {
             var fuel = i.split(" - ")
             for ((car, fuels) in carPetrols) {
                 println(fuel)
-                for (j in 0..fuel.size step 2) {
-                    if (fuel[j] == car) {
-                        price[fuel[j]] = min(price[fuel[j]]!!, fuel[j + 1].toDouble())
+                println(fuels)
+                for (j in fuel.indices step 2) {
+                    if (fuel[j] == fuels) {
+                        price[fuel[j]] = min(price[fuel[j]], fuel[j + 1].toDouble())
                     }
+                    /*if ((price[car] == null) && (fuel[j] == fuels)) {
+                        price[car] = fuel[j + 1].toDouble()
+                    } else {
+                        price[car] = fuel[j + 1].toDouble()
+                    }*/
                 }
             }
         }
     }
     println(price)
     return price
+}*/
+fun myFun(places: MutableList<MutableList<Boolean>>, requests: Map<String, Pair<Int, Int>>): Map<String, List<Int>> {
+    var people = mutableMapOf<String, List<Int>>()
+    for ((name, need) in requests) {
+        if ((need.first > places.size - 1) || (need.first < 0)) {
+            throw IllegalStateException()
+        }
+        var ans = 0
+        var number = mutableListOf<Int>()
+        for (k in (places[need.first])) {
+            if (k) number += ans
+            ans++
+        }
+        for (i in 1..need.second) {
+            if (need.second > number.size) {
+                throw IllegalStateException()
+            }
+            for (j in 0 until places[need.first].size) {
+                if (places[need.first][j]) {
+                    people[name] = people.getOrDefault(name, listOf()) + j
+                    places[need.first][j] = false
+                    if (number.size > people[name]!!.size) {
+                        break
+                    }
+
+                }
+            }
+        }
+    }
+    return (people)
+    println(people)
+    println(places)
 }
 
 

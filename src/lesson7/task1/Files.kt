@@ -267,8 +267,9 @@ fun chooseLongestChaoticWord(inputName: String, outputName: String) {
     for (line in File(inputName).readLines()) {
         if (((line.lowercase().toList()).toSet()).toList() == line.lowercase().toList()) word += line
     }
+    var max = word.maxOfOrNull { it.length }
     for (i in word) {
-        if (i.length == word.maxOfOrNull { it.length }) result += i
+        if (i.length == max) result += i
     }
     writer.write(result.joinToString(", "))
     writer.close()
